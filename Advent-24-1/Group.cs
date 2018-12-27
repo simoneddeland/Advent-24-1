@@ -13,14 +13,18 @@ namespace Advent_24_1
         public string AttackType { get; set; }
         public int HP { get; set; }
         public int Initiative { get; set; }
+        public string Name { get; set; }
 
         public List<string> Weaknesses { get; set; }
         public List<string> Immunities { get; set; }
+
+        public Group Target { get; set; }
 
         public Group()
         {
             Weaknesses = new List<string>();
             Immunities = new List<string>();
+            Name = "";
         }
 
         public int EffectivePower()
@@ -46,11 +50,23 @@ namespace Advent_24_1
         public void TakeDamage(int effectivePower, string attackType)
         {
             var damage = DamageTaken(effectivePower, attackType);
-            Size -= damage / HP;
-            if (Size < 0)
+            var unitsLost = damage / HP;
+            if (unitsLost > Size)
             {
-                Size = 0;
+                unitsLost = Size;
             }
+            // DEBUG
+            //Console.WriteLine($"{Name} taking {damage} damage and losing {unitsLost} units");
+            Size -= unitsLost;
+            if (Size == 0)
+            {
+                //Console.WriteLine($"This unit died");
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"{Size} units with HP: {HP}, DMG: {AttackDamage}, DMGTYPE: {AttackType}, Init: {Initiative}, NumWeaknesses: {Weaknesses.Count}, Immunities: {Immunities.Count}";
         }
 
     }
