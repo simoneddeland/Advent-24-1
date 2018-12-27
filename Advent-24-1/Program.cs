@@ -117,7 +117,7 @@ namespace Advent_24_1
                         Console.WriteLine($"{group.Name} contains {group.Size} units");
                     }
                 }
-                //Console.WriteLine($"Infection: {infection.Count} units left");
+ 
                 var alreadyTargeted = new List<Group>();
 
                 void AcquireTargets(Group item)
@@ -176,12 +176,14 @@ namespace Advent_24_1
                 allRemainingGroups.AddRange(immuneSystem);
                 allRemainingGroups.AddRange(infection);
 
-                allRemainingGroups.Sort((x, y) => x.Initiative > y.Initiative ? -1 : 0);
+                allRemainingGroups.Sort((x, y) => x.EffectivePower() > y.EffectivePower() ? -1 : x.EffectivePower() < y.EffectivePower() ? 1 : x.Initiative > y.Initiative ? -1 : 1);
                 foreach (var item in allRemainingGroups)
                 {
                     AcquireTargets(item);
                 }
 
+
+                allRemainingGroups.Sort((x, y) => x.Initiative > y.Initiative ? -1 : 1);
                 // DAMAGE PHASE
                 foreach (var item in allRemainingGroups)
                 {
