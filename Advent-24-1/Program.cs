@@ -12,6 +12,7 @@ namespace Advent_24_1
         static void Main(string[] args)
         {
             var fileLines = File.ReadAllLines("input24.txt");
+            var boost = 29;
 
             // DEBUG
             //fileLines = File.ReadAllLines("input24test.txt");
@@ -71,6 +72,7 @@ namespace Advent_24_1
                 if (readingImmunesystem)
                 {
                     newGroup.Name = "Immune system group " + groupNumber;
+                    newGroup.AttackDamage += boost;
                     immuneSystem.Add(newGroup);
                 }
                 else
@@ -92,6 +94,8 @@ namespace Advent_24_1
             // BATTLE
             while (immuneSystem.Count > 0 && infection.Count > 0)
             {
+                var prevNumberOfUnits = immuneSystem.Sum(x => x.Size) + infection.Sum(x => x.Size);
+                /*
                 Console.WriteLine($"Round {roundNumber}");
                 Console.WriteLine($"Immune system:");
                 if (immuneSystem.Count == 0)
@@ -117,6 +121,7 @@ namespace Advent_24_1
                         Console.WriteLine($"{group.Name} contains {group.Size} units");
                     }
                 }
+                */
  
                 var alreadyTargeted = new List<Group>();
 
@@ -214,7 +219,13 @@ namespace Advent_24_1
                 }
                 //Console.WriteLine($"Round {roundNumber} over");
                 roundNumber++;
-                Console.WriteLine();
+                //Console.WriteLine();
+
+                if (prevNumberOfUnits == immuneSystem.Sum(x => x.Size) + infection.Sum(x => x.Size))
+                {
+                    Console.WriteLine("No units killed this round, tie detected");
+                    break;
+                }
 
             }
             Console.WriteLine("Battle over");
